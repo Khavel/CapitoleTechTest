@@ -2,7 +2,14 @@
 using System.Diagnostics;
 using System.Threading.Tasks;
 using GtMotive.Estimate.Microservice.Api;
+using GtMotive.Estimate.Microservice.Api.Presenters;
+using GtMotive.Estimate.Microservice.Api.UseCases;
+using GtMotive.Estimate.Microservice.Api.UseCases.RentVehicle;
+using GtMotive.Estimate.Microservice.ApplicationCore.UseCases;
+using GtMotive.Estimate.Microservice.ApplicationCore.UseCases.RentVehicle;
+using GtMotive.Estimate.Microservice.Domain.Interfaces;
 using GtMotive.Estimate.Microservice.Infrastructure;
+using GtMotive.Estimate.Microservice.Infrastructure.Persistence;
 using MediatR;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -97,6 +104,24 @@ namespace GtMotive.Estimate.Microservice.FunctionalTests.Infrastructure
             services.AddApiDependencies();
             services.AddLogging();
             services.AddBaseInfrastructure(true);
+            var memoryRepo = new InMemoryVehicleRepository();
+
+            // Registrar la misma instancia para ambas interfaces
+            services.AddSingleton(memoryRepo);
+            services.AddSingleton<IVehicleRepository>(sp => memoryRepo);
+            services.AddScoped<InMemoryVehicleRepository>();
+
+            services.AddScoped<IUseCase<RentVehicleInput>, RentVehicleUseCase>();
+            services.AddScoped<IRentVehicleOutputPort, RentVehiclePresenter>();
+            services.AddScoped<IUseCase<RentVehicleInput>, RentVehicleUseCase>();
+
+            services.AddScoped<RentVehiclePresenter>();
+
+            services.AddScoped<IRentVehicleOutputPort>(sp => sp.GetRequiredService<RentVehiclePresenter>());
+            services.AddScoped<IWebApiPresenter>(sp => sp.GetRequiredService<RentVehiclePresenter>());
+
+            services.AddScoped<IUseCase<RentVehicleInput>, RentVehicleUseCase>();
+            services.AddScoped<IRequestHandler<RentVehicleRequest, IWebApiPresenter>, RentVehicleRequestHandler>();
         }
     }
 }
