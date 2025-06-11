@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using GtMotive.Estimate.Microservice.Domain.Entities;
@@ -45,6 +46,32 @@ namespace GtMotive.Estimate.Microservice.Infrastructure.Persistence
         {
             // No-op for in-memory repository
             return Task.CompletedTask;
+        }
+
+        /// <inheritdoc />
+        public Task<IEnumerable<Vehicle>> GetAllAsync()
+        {
+            return Task.FromResult<IEnumerable<Vehicle>>(_vehicles);
+        }
+
+        public void SeedTestData()
+        {
+            var now = DateTime.UtcNow;
+
+            var v1 = new Vehicle(
+                new VehicleId(Guid.NewGuid()),
+                "Tesla",
+                "Model S",
+                new Year(now.Year - 2));
+
+            var v2 = new Vehicle(
+                new VehicleId(Guid.NewGuid()),
+                "Toyota",
+                "Corolla",
+                new Year(now.Year - 1));
+
+            _vehicles.Add(v1);
+            _vehicles.Add(v2);
         }
     }
 }

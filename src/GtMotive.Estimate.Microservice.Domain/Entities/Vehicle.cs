@@ -63,14 +63,15 @@ namespace GtMotive.Estimate.Microservice.Domain.Entities
         }
 
         /// <summary>
-        /// Marks the vehicle as rented by a given customer.
+        /// Marks the vehicle as rented by the specified customer.
         /// </summary>
-        /// <param name="customerId">The customer who rents the vehicle.</param>
-        public void Rent(CustomerId customerId)
+        /// <param name="customerId">The customer renting the vehicle.</param>
+        /// <exception cref="InvalidOperationException">Thrown when the vehicle is already rented.</exception>
+        public void RentTo(CustomerId customerId)
         {
             if (!IsAvailable)
             {
-                throw new InvalidOperationException("Vehicle is already rented.");
+                throw new InvalidOperationException("The vehicle is not available for rent.");
             }
 
             RentedBy = customerId;

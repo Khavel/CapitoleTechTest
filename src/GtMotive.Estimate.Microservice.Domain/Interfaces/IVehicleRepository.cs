@@ -43,5 +43,11 @@ namespace GtMotive.Estimate.Microservice.Domain.Interfaces
         /// <param name="vehicle">The vehicle to update.</param>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
         Task UpdateAsync(Vehicle vehicle);
+
+        /// <summary>
+        /// Gets all vehicles from the repository.
+        /// </summary>
+        /// <returns>A collection of all vehicles.</returns>
+        Task<IEnumerable<Vehicle>> GetAllAsync();
     }
 }

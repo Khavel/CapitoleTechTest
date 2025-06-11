@@ -4,10 +4,12 @@ using Azure.Extensions.AspNetCore.Configuration.Secrets;
 using Azure.Identity;
 using Azure.Security.KeyVault.Secrets;
 using GtMotive.Estimate.Microservice.Api;
+using GtMotive.Estimate.Microservice.Domain.Interfaces;
 using GtMotive.Estimate.Microservice.Host.Configuration;
 using GtMotive.Estimate.Microservice.Host.DependencyInjection;
 using GtMotive.Estimate.Microservice.Infrastructure;
 using GtMotive.Estimate.Microservice.Infrastructure.MongoDb.Settings;
+using GtMotive.Estimate.Microservice.Infrastructure.Persistence;
 using IdentityServer4.AccessTokenValidation;
 using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.AspNetCore.Builder;
@@ -94,6 +96,15 @@ builder.Services.AddAuthentication(options =>
 builder.Services.AddSwagger(appSettings, builder.Configuration);
 
 var app = builder.Build();
+
+if (app.Environment.IsDevelopment())
+{
+    var repo = app.Services.GetRequiredService<IVehicleRepository>();
+    if (repo is InMemoryVehicleRepository memRepo)
+    {
+        memRepo.SeedTestData();
+    }
+}
 
 // Logging configuration.
 Log.Logger = builder.Environment.IsDevelopment() ?
