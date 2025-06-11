@@ -23,6 +23,8 @@ namespace GtMotive.Estimate.Microservice.Host.DependencyInjection
             services.AddScoped<ICreateVehicleOutputPort, CreateVehiclePresenter>();
 
             services.AddScoped<CreateVehiclePresenter>();
+            services.AddScoped<ICreateVehicleOutputPort>(sp => sp.GetRequiredService<CreateVehiclePresenter>());
+            services.AddScoped<IUseCase<CreateVehicleInput>, CreateVehicleUseCase>();
 
             services.AddSingleton<IVehicleRepository, InMemoryVehicleRepository>();
             services.AddSingleton<IUnitOfWork, InMemoryUnitOfWork>();
