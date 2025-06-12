@@ -108,19 +108,20 @@ namespace GtMotive.Estimate.Microservice.Host.DependencyInjection
                 : $"{pathBase.CurrentWithoutTrailingSlash}/swagger/v{AssemblyVersion}/swagger.json";
 
             app.UseSwaggerUI(
-                options =>
-                {
-                    options.SwaggerEndpoint(url, $"{AssemblyName} API V{AssemblyVersion}");
-
-                    if (configuration.GetValue<string>("Swagger:EnableTryIt") == "No")
+                    options =>
                     {
-                        options.SupportedSubmitMethods(Array.Empty<Swashbuckle.AspNetCore.SwaggerUI.SubmitMethod>());
-                    }
+                        options.SwaggerEndpoint(url, $"{AssemblyName} API V{AssemblyVersion}");
+                        options.RoutePrefix = string.Empty;
 
-                    options.OAuthClientId("client-gtestimate-swagger");
-                    options.OAuthClientSecret("gtmotive");
-                    options.OAuthScopeSeparator(" ");
-                });
+                        if (configuration.GetValue<string>("Swagger:EnableTryIt") == "No")
+                        {
+                            options.SupportedSubmitMethods(Array.Empty<Swashbuckle.AspNetCore.SwaggerUI.SubmitMethod>());
+                        }
+
+                        options.OAuthClientId("client-gtestimate-swagger");
+                        options.OAuthClientSecret("gtmotive");
+                        options.OAuthScopeSeparator(" ");
+                    });
 
             return app;
         }
