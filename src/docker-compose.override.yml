@@ -1,0 +1,9 @@
+version: '3.4'
+
+services:
+  estimate-api:
+    volumes:
+      - ./GtMotive.Estimate.Microservice.Host/https:/https
+    environment:
+      ASPNETCORE_Kestrel__Certificates__Default__Path: /https/gtmotive.pfx
+      ASPNETCORE_Kestrel__Certificates__Default__Password: GtMotive123!

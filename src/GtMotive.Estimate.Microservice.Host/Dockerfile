@@ -7,6 +7,8 @@ FROM mcr.microsoft.com/dotnet/sdk:6.0.404-focal-amd64 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 
+#solucion para referencias duplicadas por proyecto cuando se ejecuta fuera de VS
+ENV BuildingInsideDocker=true
 
 COPY GtMotive.Estimate.Microservice.Host/GtMotive.Estimate.Microservice.Host.csproj GtMotive.Estimate.Microservice.Host/
 COPY GtMotive.Estimate.Microservice.Api/GtMotive.Estimate.Microservice.Api.csproj GtMotive.Estimate.Microservice.Api/

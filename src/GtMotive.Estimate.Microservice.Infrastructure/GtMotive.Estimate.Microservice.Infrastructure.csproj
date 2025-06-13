@@ -5,13 +5,22 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.ApplicationInsights" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" />
-    <PackageReference Include="MongoDB.Bson" />
+    <PackageReference Include="Microsoft.ApplicationInsights" Version="2.21.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="6.0.0" />
+    <PackageReference Include="MongoDB.Bson" Version="2.22.0" />
     <PackageReference Include="MongoDB.Driver" Version="2.22.0" />
-    <PackageReference Include="Polly" />
+    <PackageReference Include="Polly" Version="7.2.3" />
+  </ItemGroup>
+  
+  <ItemGroup Condition=" '$(BuildingInsideDocker)' == 'true' ">
+    <PackageReference Include="Microsoft.Extensions.Options" Version="6.0.0" />
   </ItemGroup>
 
+  <ItemGroup Condition=" '$(BuildingInsideDocker)' != 'true' ">
+    <PackageReference Update="Microsoft.Extensions.Options" Version="6.0.0" />
+  </ItemGroup>
+  
+  
   <ItemGroup>
     <ProjectReference Include="..\GtMotive.Estimate.Microservice.ApplicationCore\GtMotive.Estimate.Microservice.ApplicationCore.csproj" />
   </ItemGroup>
